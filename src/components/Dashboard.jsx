@@ -38,20 +38,17 @@ export const Dashboard = () => {
             title="Total Balance"
             amount={`$${summary.balance}`}
             icon="💳"
-            color="#00d9ff"
             trend={{ direction: 'up', value: 12 }}
           />
           <SummaryCard
             title="Total Income"
             amount={`$${summary.income}`}
             icon="📈"
-            color="#4ade80"
           />
           <SummaryCard
             title="Total Expenses"
             amount={`-$${summary.expenses}`}
             icon="📉"
-            color="#ff006e"
           />
         </section>
 

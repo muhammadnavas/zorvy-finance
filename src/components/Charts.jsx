@@ -35,7 +35,7 @@ export const Charts = () => {
     if (data.length === 0) return;
 
     const total = data.reduce((sum, [_, val]) => sum + val, 0);
-    const colors = ['#00d9ff', '#ff006e', '#a855f7', '#06b6d4', '#ec4899', '#8b5cf6'];
+    const colors = ['rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.25)', 'rgba(255, 255, 255, 0.35)', 'rgba(255, 255, 255, 0.45)', 'rgba(255, 255, 255, 0.55)', 'rgba(255, 255, 255, 0.65)'];
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -119,7 +119,7 @@ export const Charts = () => {
     }
 
     // Draw line
-    ctx.strokeStyle = '#00d9ff';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
     ctx.lineWidth = 3;
     ctx.beginPath();
 
@@ -133,7 +133,7 @@ export const Charts = () => {
     ctx.stroke();
 
     // Draw points
-    ctx.fillStyle = '#ff006e';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     balances.forEach((balance, idx) => {
       const x = padding + (width * idx) / (months.length - 1 || 1);
       const y = canvas.height - padding - ((balance - minBalance) / range) * height;

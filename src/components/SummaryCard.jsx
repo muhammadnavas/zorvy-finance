@@ -1,9 +1,9 @@
 
-export const SummaryCard = ({ title, amount, icon, color, trend }) => {
+export const SummaryCard = ({ title, amount, icon, trend }) => {
   return (
-    <div className="summary-card" style={{ borderTopColor: color }}>
+    <div className="summary-card">
       <div className="summary-header">
-        <span className="summary-icon" style={{ color }}>
+        <span className="summary-icon">
           {icon}
         </span>
         <h3 className="summary-title">{title}</h3>

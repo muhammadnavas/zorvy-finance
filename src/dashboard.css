@@ -53,10 +53,7 @@
   font-size: 28px;
   font-weight: 700;
   margin: 0;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .header-title p {
@@ -99,9 +96,9 @@
 
 /* Add Transaction Button */
 .add-transaction-btn {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: var(--bg-primary);
-  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
@@ -564,9 +561,10 @@
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: var(--bg-primary);
-  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: none;
 }
 
 .btn-submit:hover {

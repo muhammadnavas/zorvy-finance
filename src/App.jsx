@@ -18,7 +18,7 @@ function App() {
             bendStrength={-0.5}
             interactive={true}
             parallax={true}
-            linesGradient={["#00d9ff"]}
+            linesGradient={["rgba(255, 255, 255, 0.05)"]}
           />
         </div>
 
