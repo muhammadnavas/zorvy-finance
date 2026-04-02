@@ -8,16 +8,15 @@ export const Header = () => {
     <header className="dashboard-header">
       <div className="header-content">
         <div className="header-title">
-          <h1>💰 Finance Dashboard</h1>
-          <p>Track and manage your financial activity</p>
+          <img src="/favicon.svg" alt="Zorvy Finance Logo" className="logo" />
+          <h1>Zorvy Finance</h1>
         </div>
 
         <div className="header-actions">
           <div className="role-selector">
-            <label>Role:</label>
             <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="viewer">👁️ Viewer</option>
-              <option value="admin">🔐 Admin</option>
+              <option value="viewer">Viewer</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
 

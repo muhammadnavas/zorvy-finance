@@ -37,23 +37,23 @@ export const Insights = () => {
         <div className="insight-card">
           <p className="insight-label">Highest Spending Category</p>
           <p className="insight-value">
-            {insights.highest ? `${insights.highest[0]} ($${insights.highest[1].toFixed(2)})` : 'No data'}
+            {insights.highest ? `${insights.highest[0]} (₹${insights.highest[1].toFixed(2)})` : 'No data'}
           </p>
         </div>
 
         <div className="insight-card">
           <p className="insight-label">Average Expense</p>
-          <p className="insight-value">${insights.avgExpense}</p>
+          <p className="insight-value">₹${insights.avgExpense}</p>
         </div>
 
         <div className="insight-card">
           <p className="insight-label">Total Income (Shown)</p>
-          <p className="insight-value insight-income">${insights.totalIncome.toFixed(2)}</p>
+          <p className="insight-value insight-income">₹${insights.totalIncome.toFixed(2)}</p>
         </div>
 
         <div className="insight-card">
           <p className="insight-label">Total Expenses (Shown)</p>
-          <p className="insight-value insight-expense">${insights.totalExpenses.toFixed(2)}</p>
+          <p className="insight-value insight-expense">₹${insights.totalExpenses.toFixed(2)}</p>
         </div>
       </div>
 

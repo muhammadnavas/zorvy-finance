@@ -11,12 +11,15 @@
   --bg-primary: #000000;
   --bg-secondary: rgba(255, 255, 255, 0.05);
   --bg-tertiary: rgba(255, 255, 255, 0.08);
+  --bg-hover: rgba(255, 255, 255, 0.15);
+  --bg-light: rgba(255, 255, 255, 0.2);
   
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-tertiary: rgba(255, 255, 255, 0.5);
   
-  --border-color: rgba(0, 217, 255, 0.2);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-light: rgba(255, 255, 255, 0.15);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -30,65 +33,78 @@
 
 /* Header */
 .dashboard-header {
-  border-bottom: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.5);
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 24px 0;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  gap: 40px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 32px;
+  max-width: 90%;
+  width: 100%;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .header-title h1 {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   margin: 0;
   color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.header-title .logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .header-title p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin: 4px 0 0;
+  display: none;
 }
 
 .header-actions {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
 }
 
 .role-selector {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--bg-secondary);
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
+  gap: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: none;
 }
 
 .role-selector label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  display: none;
 }
 
 .role-selector select {
   background: transparent;
   border: none;
-  color: var(--primary);
-  font-weight: 600;
+  color: var(--text-primary);
+  font-weight: 500;
   cursor: pointer;
   font-size: 14px;
   outline: none;
@@ -96,21 +112,20 @@
 
 /* Add Transaction Button */
 .add-transaction-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--bg-light);
   color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-light);
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
 }
 
 .add-transaction-btn:hover {
+  background: var(--bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 217, 255, 0.4);
 }
 
 /* Main Content */
@@ -561,9 +576,9 @@
 }
 
 .btn-submit {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--bg-light);
   color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-light);
   box-shadow: none;
 }
 

@@ -82,7 +82,7 @@ export const TransactionsList = () => {
                 </div>
                 <div className="transaction-amount">
                   <span className={`amount ${transaction.type}`}>
-                    {transaction.type === 'income' ? '+' : '-'}${Math.abs(transaction.amount)}
+                    {transaction.type === 'income' ? '+' : '-'}₹${Math.abs(transaction.amount)}
                   </span>
                   {role === 'admin' && (
                     <button

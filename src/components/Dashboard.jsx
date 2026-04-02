@@ -36,18 +36,18 @@ export const Dashboard = () => {
         <section className="summary-section">
           <SummaryCard
             title="Total Balance"
-            amount={`$${summary.balance}`}
+            amount={`₹${summary.balance}`}
             icon="💳"
             trend={{ direction: 'up', value: 12 }}
           />
           <SummaryCard
             title="Total Income"
-            amount={`$${summary.income}`}
+            amount={`₹${summary.income}`}
             icon="📈"
           />
           <SummaryCard
             title="Total Expenses"
-            amount={`-$${summary.expenses}`}
+            amount={`-₹${summary.expenses}`}
             icon="📉"
           />
         </section>
