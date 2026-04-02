@@ -18,7 +18,7 @@ function App() {
             bendStrength={-0.5}
             interactive={true}
             parallax={true}
-            linesGradient={["#00d9ff", "#ff006e", "#a855f7"]}
+            linesGradient={["#00d9ff"]}
           />
         </div>
 
