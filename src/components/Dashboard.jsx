@@ -210,7 +210,9 @@ export const Dashboard = ({ isMobile }) => {
               <h2 style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Recent Transactions</h2>
               <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '4px 0 0' }}>Latest activity</p>
             </div>
-            <button onClick={() => setActiveView('transactions')}
+            <button 
+              onClick={() => setActiveView('transactions')}
+              aria-label="View all transactions"
               style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 500, color: 'var(--accent)' }}>
               View all <ArrowRight size={14} />
             </button>

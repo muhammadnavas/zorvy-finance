@@ -89,7 +89,7 @@ export const AiChat = ({ isMobile }) => {
         background: 'linear-gradient(135deg, #10b981, #059669)',
         flexShrink: 0,
       }}>
-        <img src="/favicon.svg" alt="ZorvyAI" style={{ width: 36, height: 36, borderRadius: 10 }} />
+        <img src="/favicon.svg" alt="Zorvy AI Logo" style={{ width: 36, height: 36, borderRadius: 10 }} />
         <div style={{ flex: 1 }}>
           <p style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: 0 }}>ZorvyAI</p>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', margin: 0 }}>
@@ -252,6 +252,7 @@ export const AiChat = ({ isMobile }) => {
           <button
             onClick={() => handleSend()}
             disabled={!input.trim() || isLoading}
+            aria-label="Send Message"
             style={{
               width: 36, height: 36, borderRadius: 10, border: 'none',
               cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',

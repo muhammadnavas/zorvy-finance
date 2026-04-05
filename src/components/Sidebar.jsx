@@ -32,16 +32,20 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
       {/* Logo + close button (mobile) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '24px 24px 16px', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <img src="/favicon.svg" alt="Zorvy" style={{ width: 36, height: 36, borderRadius: 10 }} />
+          <img src="/favicon.svg" alt="Zorvy Dashboard Logo" style={{ width: 36, height: 36, borderRadius: 10 }} />
           <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: -0.5 }}>
             ZorvyFinance
           </span>
         </div>
         {isMobile && (
-          <button onClick={onClose} style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            padding: 6, borderRadius: 8, color: 'var(--text-muted)',
-          }}>
+          <button 
+            onClick={onClose} 
+            aria-label="Close Sidebar"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              padding: 6, borderRadius: 8, color: 'var(--text-muted)',
+            }}
+          >
             <X size={20} />
           </button>
         )}
@@ -117,6 +121,7 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
         <button
           id="theme-toggle"
           onClick={toggleTheme}
+          aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           style={{
             display: 'flex', alignItems: 'center', gap: 8,
             padding: '10px 16px', borderRadius: 12,

@@ -150,6 +150,12 @@ GUIDELINES:
       if (!response.ok) {
         const error = await response.json();
         const msg = error.error?.message || `API error: ${response.status}`;
+        
+        // Handle specific production errors
+        if (response.status === 401) {
+          throw new Error('Invalid AI API key. Please check your environment configuration.');
+        }
+        
         // If quota exceeded, try next model
         if (msg.toLowerCase().includes('quota') || msg.toLowerCase().includes('rate')) {
           lastError = new Error(msg);
