@@ -1,23 +1,84 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
 const FinanceContext = createContext();
 
-export const FinanceProvider = ({ children }) => {
-  const [role, setRole] = useState('viewer'); // 'viewer' or 'admin'
-  
-  const [transactions, setTransactions] = useState([
-    { id: 1, date: '2026-04-01', amount: 2500, category: 'Salary', type: 'income', description: 'Monthly salary' },
-    { id: 2, date: '2026-03-28', amount: -150, category: 'Groceries', type: 'expense', description: 'Weekly groceries' },
-    { id: 3, date: '2026-03-25', amount: -45, category: 'Entertainment', type: 'expense', description: 'Movie tickets' },
-    { id: 4, date: '2026-03-20', amount: -200, category: 'Utilities', type: 'expense', description: 'Electric bill' },
-    { id: 5, date: '2026-03-18', amount: -120, category: 'Dining', type: 'expense', description: 'Restaurant' },
-    { id: 6, date: '2026-03-15', amount: -80, category: 'Transport', type: 'expense', description: 'Gas' },
-    { id: 7, date: '2026-03-12', amount: 1200, category: 'Freelance', type: 'income', description: 'Project payment' },
-    { id: 8, date: '2026-03-10', amount: -300, category: 'Shopping', type: 'expense', description: 'Clothes' },
-    { id: 9, date: '2026-03-08', amount: -50, category: 'Groceries', type: 'expense', description: 'Shopping' },
-    { id: 10, date: '2026-03-05', amount: -180, category: 'Entertainment', type: 'expense', description: 'Concert' },
-  ]);
+// ── Seed data ───────────────────────────────────────────────
+const SEED_TRANSACTIONS = [
+  { id: 1,  date: '2026-06-25', amount: 120000, category: 'Salary',        type: 'income',  description: 'Monthly Salary' },
+  { id: 2,  date: '2026-06-22', amount: -10000, category: 'Investment',    type: 'expense', description: 'Mutual Fund SIP' },
+  { id: 3,  date: '2026-06-20', amount: -2800,  category: 'Entertainment', type: 'expense', description: 'Movie & Dinner' },
+  { id: 4,  date: '2026-06-18', amount: -800,   category: 'Health',        type: 'expense', description: 'Pharmacy' },
+  { id: 5,  date: '2026-06-14', amount: -4200,  category: 'Shopping',      type: 'expense', description: 'Monsoon Shopping' },
+  { id: 6,  date: '2026-06-12', amount: -2800,  category: 'Utilities',     type: 'expense', description: 'Electricity Bill' },
+  { id: 7,  date: '2026-06-10', amount: 35000,  category: 'Freelance',     type: 'income',  description: 'Freelance Project' },
+  { id: 8,  date: '2026-05-25', amount: 120000, category: 'Salary',        type: 'income',  description: 'Monthly Salary' },
+  { id: 9,  date: '2026-05-20', amount: -10000, category: 'Investment',    type: 'expense', description: 'Mutual Fund SIP' },
+  { id: 10, date: '2026-05-18', amount: -15000, category: 'Rent',          type: 'expense', description: 'House Rent' },
+  { id: 11, date: '2026-05-15', amount: -3500,  category: 'Food & Dining', type: 'expense', description: 'Restaurant Dinners' },
+  { id: 12, date: '2026-05-12', amount: -2000,  category: 'Transport',     type: 'expense', description: 'Cab & Metro' },
+  { id: 13, date: '2026-05-08', amount: 25000,  category: 'Freelance',     type: 'income',  description: 'UI Design Project' },
+  { id: 14, date: '2026-04-25', amount: 120000, category: 'Salary',        type: 'income',  description: 'Monthly Salary' },
+  { id: 15, date: '2026-04-22', amount: -10000, category: 'Investment',    type: 'expense', description: 'Mutual Fund SIP' },
+  { id: 16, date: '2026-04-18', amount: -15000, category: 'Rent',          type: 'expense', description: 'House Rent' },
+  { id: 17, date: '2026-04-15', amount: -6000,  category: 'Shopping',      type: 'expense', description: 'Summer Clothes' },
+  { id: 18, date: '2026-04-10', amount: -4500,  category: 'Food & Dining', type: 'expense', description: 'Groceries & Dining' },
+  { id: 19, date: '2026-04-05', amount: -1200,  category: 'Entertainment', type: 'expense', description: 'Concert Tickets' },
+  { id: 20, date: '2026-03-25', amount: 120000, category: 'Salary',        type: 'income',  description: 'Monthly Salary' },
+  { id: 21, date: '2026-03-20', amount: -10000, category: 'Investment',    type: 'expense', description: 'Mutual Fund SIP' },
+  { id: 22, date: '2026-03-18', amount: -15000, category: 'Rent',          type: 'expense', description: 'House Rent' },
+  { id: 23, date: '2026-03-12', amount: -8500,  category: 'Shopping',      type: 'expense', description: 'Electronics' },
+  { id: 24, date: '2026-03-08', amount: -3200,  category: 'Food & Dining', type: 'expense', description: 'Weekend Dining' },
+  { id: 25, date: '2026-03-05', amount: 15000,  category: 'Freelance',     type: 'income',  description: 'Blog Writing' },
+  { id: 26, date: '2026-02-25', amount: 120000, category: 'Salary',        type: 'income',  description: 'Monthly Salary' },
+  { id: 27, date: '2026-02-20', amount: -10000, category: 'Investment',    type: 'expense', description: 'Mutual Fund SIP' },
+  { id: 28, date: '2026-02-18', amount: -15000, category: 'Rent',          type: 'expense', description: 'House Rent' },
+  { id: 29, date: '2026-02-14', amount: -5500,  category: 'Shopping',      type: 'expense', description: "Valentine's Gift" },
+  { id: 30, date: '2026-02-10', amount: -2500,  category: 'Health',        type: 'expense', description: 'Doctor Checkup' },
+  { id: 31, date: '2026-01-25', amount: 120000, category: 'Salary',        type: 'income',  description: 'Monthly Salary' },
+  { id: 32, date: '2026-01-20', amount: -10000, category: 'Investment',    type: 'expense', description: 'Mutual Fund SIP' },
+  { id: 33, date: '2026-01-18', amount: -15000, category: 'Rent',          type: 'expense', description: 'House Rent' },
+  { id: 34, date: '2026-01-12', amount: -7000,  category: 'Shopping',      type: 'expense', description: 'Winter Sale Shopping' },
+  { id: 35, date: '2026-01-05', amount: -1800,  category: 'Transport',     type: 'expense', description: 'Train Tickets' },
+  { id: 36, date: '2026-01-02', amount: 20000,  category: 'Freelance',     type: 'income',  description: 'New Year Project' },
+];
 
+// ── Reducer ─────────────────────────────────────────────────
+const transactionReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_TRANSACTIONS':
+      return action.payload;
+    case 'ADD_TRANSACTION':
+      return [{ id: Math.max(...state.map(t => t.id), 0) + 1, ...action.payload }, ...state];
+    case 'EDIT_TRANSACTION':
+      return state.map(t => t.id === action.payload.id ? { ...t, ...action.payload.updates } : t);
+    case 'DELETE_TRANSACTION':
+      return state.filter(t => t.id !== action.payload);
+    default:
+      return state;
+  }
+};
+
+// ── Helpers ─────────────────────────────────────────────────
+const loadFromStorage = (key, fallback) => {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+// ── Provider ────────────────────────────────────────────────
+export const FinanceProvider = ({ children }) => {
+  const [transactions, dispatch] = useReducer(
+    transactionReducer,
+    SEED_TRANSACTIONS,
+    (initial) => loadFromStorage('zf_transactions', initial)
+  );
+
+  const [role, setRole] = useState(() => loadFromStorage('zf_role', 'admin'));
+  const [theme, setTheme] = useState(() => loadFromStorage('zf_theme', 'dark'));
+  const [activeView, setActiveView] = useState('dashboard');
   const [filters, setFilters] = useState({
     search: '',
     category: 'all',
@@ -26,38 +87,88 @@ export const FinanceProvider = ({ children }) => {
     endDate: null,
   });
 
+  // Persist to localStorage
+  useEffect(() => { localStorage.setItem('zf_transactions', JSON.stringify(transactions)); }, [transactions]);
+  useEffect(() => { localStorage.setItem('zf_role', JSON.stringify(role)); }, [role]);
+  useEffect(() => { localStorage.setItem('zf_theme', JSON.stringify(theme)); }, [theme]);
+
+  // Apply theme to document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  }, []);
+
+  // ── Actions ─────────────────────────────────────────────
   const addTransaction = useCallback((transaction) => {
-    if (role === 'admin') {
-      setTransactions(prev => [{
-        id: Math.max(...prev.map(t => t.id), 0) + 1,
-        ...transaction,
-      }, ...prev]);
-    }
+    if (role === 'admin') dispatch({ type: 'ADD_TRANSACTION', payload: transaction });
   }, [role]);
 
   const editTransaction = useCallback((id, updates) => {
-    if (role === 'admin') {
-      setTransactions(prev =>
-        prev.map(t => t.id === id ? { ...t, ...updates } : t)
-      );
-    }
+    if (role === 'admin') dispatch({ type: 'EDIT_TRANSACTION', payload: { id, updates } });
   }, [role]);
 
   const deleteTransaction = useCallback((id) => {
-    if (role === 'admin') {
-      setTransactions(prev => prev.filter(t => t.id !== id));
-    }
+    if (role === 'admin') dispatch({ type: 'DELETE_TRANSACTION', payload: id });
   }, [role]);
 
+  // ── Computed values ─────────────────────────────────────
+  const computed = useMemo(() => {
+    const incomeTransactions = transactions.filter(t => t.type === 'income');
+    const expenseTransactions = transactions.filter(t => t.type === 'expense');
+    const totalIncome = incomeTransactions.reduce((sum, t) => sum + t.amount, 0);
+    const totalExpenses = expenseTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0);
+    const netSavings = totalIncome - totalExpenses;
+    const savingsRate = totalIncome > 0 ? Math.round((netSavings / totalIncome) * 100) : 0;
+
+    // Monthly data for charts
+    const monthlyMap = {};
+    transactions.forEach(t => {
+      const d = new Date(t.date);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      if (!monthlyMap[key]) monthlyMap[key] = { month: key, income: 0, expenses: 0 };
+      if (t.type === 'income') monthlyMap[key].income += t.amount;
+      else monthlyMap[key].expenses += Math.abs(t.amount);
+    });
+    const monthlyData = Object.values(monthlyMap)
+      .sort((a, b) => a.month.localeCompare(b.month))
+      .map(m => ({
+        ...m,
+        label: new Date(m.month + '-01').toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }),
+        netBalance: m.income - m.expenses,
+      }));
+
+    // Category data for donut
+    const categoryMap = {};
+    expenseTransactions.forEach(t => {
+      categoryMap[t.category] = (categoryMap[t.category] || 0) + Math.abs(t.amount);
+    });
+    const categoryData = Object.entries(categoryMap)
+      .sort(([, a], [, b]) => b - a)
+      .map(([name, value]) => ({ name, value }));
+
+    return {
+      totalIncome,
+      totalExpenses,
+      netSavings,
+      savingsRate,
+      incomeCount: incomeTransactions.length,
+      expenseCount: expenseTransactions.length,
+      monthlyData,
+      categoryData,
+    };
+  }, [transactions]);
+
   const value = {
-    role,
-    setRole,
     transactions,
-    addTransaction,
-    editTransaction,
-    deleteTransaction,
-    filters,
-    setFilters,
+    role, setRole,
+    theme, toggleTheme,
+    activeView, setActiveView,
+    filters, setFilters,
+    addTransaction, editTransaction, deleteTransaction,
+    computed,
   };
 
   return (
@@ -69,8 +180,6 @@ export const FinanceProvider = ({ children }) => {
 
 export const useFinance = () => {
   const context = React.useContext(FinanceContext);
-  if (!context) {
-    throw new Error('useFinance must be used within FinanceProvider');
-  }
+  if (!context) throw new Error('useFinance must be used within FinanceProvider');
   return context;
 };

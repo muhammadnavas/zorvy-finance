@@ -1,6 +1,54 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* ============================================================
+   THEME CUSTOM PROPERTIES
+   ============================================================ */
+
+:root {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dark theme (default) */
+[data-theme="dark"] {
+  --bg-base: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-surface-hover: #334155;
+  --bg-sidebar: #0f172a;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #293548;
+  --border-light: #3b4f66;
+  --accent: #10b981;
+  --accent-light: rgba(16, 185, 129, 0.15);
+  --danger: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.15);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg-base: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --bg-sidebar: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --border-light: #cbd5e1;
+  --accent: #059669;
+  --accent-light: rgba(16, 185, 129, 0.1);
+  --danger: #dc2626;
+  --danger-light: rgba(239, 68, 68, 0.1);
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  color-scheme: light;
+}
+
+/* ============================================================
+   BASE RESET
+   ============================================================ */
 
 * {
   margin: 0;
@@ -8,10 +56,79 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  background: #000000;
+  font-family: var(--font-sans);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================
+   FORM ELEMENTS — ensure native elements follow the theme
+   ============================================================ */
+
+select,
+input,
+textarea,
+button {
+  font-family: var(--font-sans);
+  color: inherit;
+}
+
+/* Style native select dropdown options for both themes */
+select option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+/* Input placeholder color */
+::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ============================================================
+   RECHARTS FIXES
+   ============================================================ */
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+/* Ensure Recharts legend text follows theme */
+.recharts-legend-item-text {
+  color: var(--text-secondary) !important;
+}
+
+/* Cartesian grid lines should follow theme */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--border) !important;
 }
