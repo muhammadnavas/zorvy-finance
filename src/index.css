@@ -132,3 +132,22 @@ select option {
 .recharts-cartesian-grid-vertical line {
   stroke: var(--border) !important;
 }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes chat-slide-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(16,185,129,0.4), 0 0 40px rgba(16,185,129,0.15); }
+  50%      { box-shadow: 0 4px 24px rgba(16,185,129,0.6), 0 0 60px rgba(16,185,129,0.25); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

@@ -1,10 +1,11 @@
-import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X } from 'lucide-react';
+import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X, Bot } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 
 const navItems = [
   { id: 'dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
   { id: 'transactions', label: 'Transactions', icon: ArrowLeftRight },
   { id: 'insights',     label: 'Insights',     icon: Lightbulb },
+  { id: 'aichat',       label: 'Zorvy AI',     icon: Bot },
 ];
 
 export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
@@ -30,14 +31,8 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
       {/* Logo + close button (mobile) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '24px 24px 16px', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: 'linear-gradient(135deg, #34d399, #059669)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <BarChart3 size={20} color="#fff" />
-          </div>
-          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <img src="/favicon.svg" alt="Zorvy" style={{ width: 36, height: 36, borderRadius: 10 }} />
+          <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: -0.5 }}>
             ZorvyFinance
           </span>
         </div>

@@ -5,6 +5,7 @@ import { Dashboard } from './components/Dashboard';
 import { TransactionsList } from './components/TransactionsList';
 import { Insights } from './components/Insights';
 import { AdminPanel } from './components/AdminPanel';
+import { AiChat } from './components/AiChat';
 import { useFinance } from './context/FinanceContext';
 import { Menu, X } from 'lucide-react';
 
@@ -91,6 +92,17 @@ const AppContent = () => {
         {activeView === 'dashboard' && <Dashboard isMobile={isMobile} />}
         {activeView === 'transactions' && <TransactionsList onOpenAddModal={() => setShowAddModal(true)} isMobile={isMobile} />}
         {activeView === 'insights' && <Insights isMobile={isMobile} />}
+        {activeView === 'aichat' && (
+          <div style={{
+            padding: isMobile ? '12px 10px' : '24px 40px',
+            maxWidth: 1000, margin: '0 auto',
+            height: isMobile ? 'calc(100vh - 56px)' : '100vh',
+            display: 'flex', flexDirection: 'column',
+            boxSizing: 'border-box',
+          }}>
+            <AiChat isMobile={isMobile} />
+          </div>
+        )}
       </main>
 
       <AdminPanel isOpen={showAddModal} onClose={() => setShowAddModal(false)} />

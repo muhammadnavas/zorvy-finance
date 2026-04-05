@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Search, SortAsc, SortDesc, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
+import { Search, SortAsc, SortDesc, Plus, Pencil, Trash2, Check, X, Download } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 import { CategoryIcon } from './CategoryIcon';
+import { exportToCSV } from '../utils/exportCSV';
 
 const selectStyle = {
   padding: '10px 12px', borderRadius: 12, fontSize: 13,
@@ -62,14 +63,23 @@ export const TransactionsList = ({ onOpenAddModal, isMobile }) => {
             <h1 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Transactions</h1>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: '2px 0 0' }}>{filteredTransactions.length} records</p>
           </div>
-          {role === 'admin' && (
-            <button onClick={onOpenAddModal} style={{
-              display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 10,
-              fontSize: 13, fontWeight: 600, background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer',
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={() => exportToCSV(filteredTransactions)} style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '8px 12px', borderRadius: 10,
+              fontSize: 13, fontWeight: 600, background: 'var(--bg-surface)', color: 'var(--text-secondary)',
+              border: '1px solid var(--border)', cursor: 'pointer',
             }}>
-              <Plus size={15} /> Add
+              <Download size={15} />
             </button>
-          )}
+            {role === 'admin' && (
+              <button onClick={onOpenAddModal} style={{
+                display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 10,
+                fontSize: 13, fontWeight: 600, background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer',
+              }}>
+                <Plus size={15} /> Add
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Filters */}
@@ -160,15 +170,27 @@ export const TransactionsList = ({ onOpenAddModal, isMobile }) => {
           <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Transactions</h1>
           <p style={{ fontSize: 14, color: 'var(--text-muted)', margin: '4px 0 0' }}>{filteredTransactions.length} records found</p>
         </div>
-        {role === 'admin' && (
-          <button onClick={onOpenAddModal} style={{
-            display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12,
-            fontSize: 14, fontWeight: 600, background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(16,185,129,0.3)',
-          }}>
-            <Plus size={16} /> Add Transaction
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button onClick={() => exportToCSV(filteredTransactions)} style={{
+            display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', borderRadius: 12,
+            fontSize: 14, fontWeight: 600, background: 'var(--bg-surface)', color: 'var(--text-secondary)',
+            border: '1px solid var(--border)', cursor: 'pointer', transition: 'all 0.2s',
+          }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+          >
+            <Download size={16} /> Export CSV
           </button>
-        )}
+          {role === 'admin' && (
+            <button onClick={onOpenAddModal} style={{
+              display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12,
+              fontSize: 14, fontWeight: 600, background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(16,185,129,0.3)',
+            }}>
+              <Plus size={16} /> Add Transaction
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Filters */}
