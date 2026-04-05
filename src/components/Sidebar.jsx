@@ -1,4 +1,4 @@
-import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User } from 'lucide-react';
+import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 
 const navItems = [
@@ -7,8 +7,13 @@ const navItems = [
   { id: 'insights',     label: 'Insights',     icon: Lightbulb },
 ];
 
-export const Sidebar = () => {
+export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
   const { role, setRole, theme, toggleTheme, activeView, setActiveView } = useFinance();
+
+  const handleNav = (id) => {
+    setActiveView(id);
+    if (onNavigate) onNavigate();
+  };
 
   return (
     <aside style={{
@@ -22,18 +27,28 @@ export const Sidebar = () => {
       zIndex: 50,
     }}>
       
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '24px 24px 16px' }}>
-        <div style={{
-          width: 36, height: 36, borderRadius: 10,
-          background: 'linear-gradient(135deg, #34d399, #059669)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <BarChart3 size={20} color="#fff" />
+      {/* Logo + close button (mobile) */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '24px 24px 16px', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: 'linear-gradient(135deg, #34d399, #059669)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <BarChart3 size={20} color="#fff" />
+          </div>
+          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>
+            ZorvyFinance
+          </span>
         </div>
-        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>
-          ZorvyFinance
-        </span>
+        {isMobile && (
+          <button onClick={onClose} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            padding: 6, borderRadius: 8, color: 'var(--text-muted)',
+          }}>
+            <X size={20} />
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
@@ -44,7 +59,7 @@ export const Sidebar = () => {
             <button
               key={item.id}
               id={`nav-${item.id}`}
-              onClick={() => setActiveView(item.id)}
+              onClick={() => handleNav(item.id)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 12,
                 padding: '10px 16px', borderRadius: 12,
