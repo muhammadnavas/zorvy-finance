@@ -11,7 +11,7 @@ const SUGGESTIONS = [
 ];
 
 export const AiChat = ({ isMobile }) => {
-  const { transactions } = useFinance();
+  const { transactions, debts } = useFinance();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ export const AiChat = ({ isMobile }) => {
 
     try {
       const history = messages.map(m => ({ role: m.role, text: m.text }));
-      const response = await sendChatMessage(userMessage, transactions, history);
+      const response = await sendChatMessage(userMessage, transactions, debts, history);
       setMessages(prev => [...prev, { role: 'assistant', text: response, time: new Date() }]);
     } catch (error) {
       setMessages(prev => [...prev, {

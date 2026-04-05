@@ -4,7 +4,7 @@ import {
   PieChart, Pie, Cell,
   BarChart, Bar,
 } from 'recharts';
-import { TrendingUp, TrendingDown, PiggyBank, Star, ArrowRight } from 'lucide-react';
+import { TrendingUp, TrendingDown, PiggyBank, Star, ArrowRight, CreditCard } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 import { CategoryIcon } from './CategoryIcon';
 
@@ -49,7 +49,7 @@ const Card = ({ children, style = {} }) => (
 
 export const Dashboard = ({ isMobile }) => {
   const { transactions, computed, setActiveView } = useFinance();
-  const { totalIncome, totalExpenses, netSavings, savingsRate, incomeCount, expenseCount, monthlyData, categoryData } = computed;
+  const { totalIncome, totalExpenses, netSavings, savingsRate, incomeCount, expenseCount, monthlyData, categoryData, totalDebt } = computed;
 
   const recentTransactions = useMemo(() => {
     return [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
@@ -64,7 +64,7 @@ export const Dashboard = ({ isMobile }) => {
     { title: 'TOTAL INCOME',   value: formatFullCurrency(totalIncome),   sub: `${incomeCount} transactions`,  Icon: TrendingUp,   color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
     { title: 'TOTAL EXPENSES', value: formatFullCurrency(totalExpenses), sub: `${expenseCount} transactions`, Icon: TrendingDown,  color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
     { title: 'NET SAVINGS',    value: formatFullCurrency(netSavings),    sub: `${savingsRate}% of income`,    Icon: PiggyBank,     color: '#3b82f6', bg: 'rgba(59,130,246,0.12)' },
-    { title: 'CIVIL SCORE',    value: '100',                             sub: 'Based on spending habits',     Icon: Star,          color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
+    { title: 'TOTAL DEBT',     value: formatFullCurrency(totalDebt),     sub: 'Active liabilities',           Icon: CreditCard,    color: '#8b5cf6', bg: 'rgba(139,92,246,0.12)' },
   ];
 
   const pad = isMobile ? 16 : 32;

@@ -42,6 +42,12 @@ const SEED_TRANSACTIONS = [
   { id: 36, date: '2026-01-02', amount: 20000,  category: 'Freelance',     type: 'income',  description: 'New Year Project' },
 ];
 
+const SEED_DEBTS = [
+  { id: 1, name: 'Home Loan',     totalAmount: 4500000, currentBalance: 3850000, interestRate: 8.5, type: 'loan',        dueDate: 5,  emi: 35000 },
+  { id: 2, name: 'HDFC Regalia',  totalAmount: 500000,  currentBalance: 42000,   interestRate: 36,  type: 'credit_card', dueDate: 20, emi: 0 },
+  { id: 3, name: 'Personal Loan', totalAmount: 200000,  currentBalance: 85000,   interestRate: 12,  type: 'loan',        dueDate: 10, emi: 8500 },
+];
+
 // ── Reducer ─────────────────────────────────────────────────
 const transactionReducer = (state, action) => {
   switch (action.type) {
@@ -53,6 +59,23 @@ const transactionReducer = (state, action) => {
       return state.map(t => t.id === action.payload.id ? { ...t, ...action.payload.updates } : t);
     case 'DELETE_TRANSACTION':
       return state.filter(t => t.id !== action.payload);
+    default:
+      return state;
+  }
+};
+
+const debtReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_DEBT':
+      return [...state, { id: Math.max(...state.map(d => d.id), 0) + 1, ...action.payload }];
+    case 'UPDATE_DEBT':
+      return state.map(d => d.id === action.payload.id ? { ...d, ...action.payload.updates } : d);
+    case 'DELETE_DEBT':
+      return state.filter(d => d.id !== action.payload);
+    case 'RECORD_PAYMENT':
+      return state.map(d => d.id === action.payload.id 
+        ? { ...d, currentBalance: Math.max(0, d.currentBalance - action.payload.amount) } 
+        : d);
     default:
       return state;
   }
@@ -76,6 +99,12 @@ export const FinanceProvider = ({ children }) => {
     (initial) => loadFromStorage('zf_transactions', initial)
   );
 
+  const [debts, debtDispatch] = useReducer(
+    debtReducer,
+    SEED_DEBTS,
+    (initial) => loadFromStorage('zf_debts', initial)
+  );
+
   const [role, setRole] = useState(() => loadFromStorage('zf_role', 'admin'));
   const [theme, setTheme] = useState(() => loadFromStorage('zf_theme', 'dark'));
   const [activeView, setActiveView] = useState('dashboard');
@@ -89,6 +118,7 @@ export const FinanceProvider = ({ children }) => {
 
   // Persist to localStorage
   useEffect(() => { localStorage.setItem('zf_transactions', JSON.stringify(transactions)); }, [transactions]);
+  useEffect(() => { localStorage.setItem('zf_debts', JSON.stringify(debts)); }, [debts]);
   useEffect(() => { localStorage.setItem('zf_role', JSON.stringify(role)); }, [role]);
   useEffect(() => { localStorage.setItem('zf_theme', JSON.stringify(theme)); }, [theme]);
 
@@ -113,6 +143,36 @@ export const FinanceProvider = ({ children }) => {
   const deleteTransaction = useCallback((id) => {
     if (role === 'admin') dispatch({ type: 'DELETE_TRANSACTION', payload: id });
   }, [role]);
+
+  // ── Debt Actions ─────────────────────────────────────────
+  const addDebt = useCallback((debt) => {
+    if (role === 'admin') debtDispatch({ type: 'ADD_DEBT', payload: debt });
+  }, [role]);
+
+  const updateDebt = useCallback((id, updates) => {
+    if (role === 'admin') debtDispatch({ type: 'UPDATE_DEBT', payload: { id, updates } });
+  }, [role]);
+
+  const deleteDebt = useCallback((id) => {
+    if (role === 'admin') debtDispatch({ type: 'DELETE_DEBT', payload: id });
+  }, [role]);
+
+  const recordDebtPayment = useCallback(( debtId, amount, description ) => {
+    if (role !== 'admin') return;
+    
+    // 1. Update debt balance
+    debtDispatch({ type: 'RECORD_PAYMENT', payload: { id: debtId, amount } });
+    
+    // 2. Create a corresponding expense transaction
+    const debt = debts.find(d => d.id === debtId);
+    addTransaction({
+      date: new Date().toISOString().split('T')[0],
+      amount: -amount,
+      category: 'Debt Repayment',
+      type: 'expense',
+      description: description || `Payment towards ${debt?.name || 'Loan'}`,
+    });
+  }, [role, debts, addTransaction]);
 
   // ── Computed values ─────────────────────────────────────
   const computed = useMemo(() => {
@@ -149,6 +209,12 @@ export const FinanceProvider = ({ children }) => {
       .sort(([, a], [, b]) => b - a)
       .map(([name, value]) => ({ name, value }));
 
+    // Debt stats
+    const totalDebt = debts.reduce((sum, d) => sum + d.currentBalance, 0);
+    const totalEmi = debts.reduce((sum, d) => sum + (d.emi || 0), 0);
+    const totalDebtLimit = debts.reduce((sum, d) => sum + (d.totalAmount || 0), 0);
+    const debtPaidPercent = totalDebtLimit > 0 ? Math.round(((totalDebtLimit - totalDebt) / totalDebtLimit) * 100) : 0;
+
     return {
       totalIncome,
       totalExpenses,
@@ -158,16 +224,21 @@ export const FinanceProvider = ({ children }) => {
       expenseCount: expenseTransactions.length,
       monthlyData,
       categoryData,
+      totalDebt,
+      totalEmi,
+      debtPaidPercent,
     };
-  }, [transactions]);
+  }, [transactions, debts]);
 
   const value = {
     transactions,
+    debts,
     role, setRole,
     theme, toggleTheme,
     activeView, setActiveView,
     filters, setFilters,
     addTransaction, editTransaction, deleteTransaction,
+    addDebt, updateDebt, deleteDebt, recordDebtPayment,
     computed,
   };
 

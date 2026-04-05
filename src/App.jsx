@@ -3,6 +3,7 @@ import { FinanceProvider } from './context/FinanceContext';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './components/Dashboard';
 import { TransactionsList } from './components/TransactionsList';
+import { Debts } from './components/Debts';
 import { Insights } from './components/Insights';
 import { AdminPanel } from './components/AdminPanel';
 import { AiChat } from './components/AiChat';
@@ -91,6 +92,7 @@ const AppContent = () => {
       }}>
         {activeView === 'dashboard' && <Dashboard isMobile={isMobile} />}
         {activeView === 'transactions' && <TransactionsList onOpenAddModal={() => setShowAddModal(true)} isMobile={isMobile} />}
+        {activeView === 'debts' && <Debts isMobile={isMobile} />}
         {activeView === 'insights' && <Insights isMobile={isMobile} />}
         {activeView === 'aichat' && (
           <div style={{

@@ -1,9 +1,10 @@
-import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X, Bot } from 'lucide-react';
+import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X, Bot, CreditCard } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 
 const navItems = [
   { id: 'dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
   { id: 'transactions', label: 'Transactions', icon: ArrowLeftRight },
+  { id: 'debts',        label: 'Debts',        icon: CreditCard },
   { id: 'insights',     label: 'Insights',     icon: Lightbulb },
   { id: 'aichat',       label: 'Zorvy AI',     icon: Bot },
 ];

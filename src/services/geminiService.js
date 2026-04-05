@@ -5,8 +5,8 @@ const getApiUrl = (model) => `https://generativelanguage.googleapis.com/v1beta/m
 /**
  * Build a financial context summary from transactions for the AI.
  */
-export const buildFinancialContext = (transactions) => {
-  if (!transactions.length) return 'No transactions recorded yet.';
+export const buildFinancialContext = (transactions, debts = []) => {
+  if (!transactions.length && !debts.length) return 'No financial data recorded yet.';
 
   const income = transactions.filter(t => t.type === 'income');
   const expenses = transactions.filter(t => t.type === 'expense');
@@ -46,6 +46,10 @@ export const buildFinancialContext = (transactions) => {
     .map(t => `  - ${t.date} | ${t.type} | ${t.category} | ${t.description} | ₹${Math.abs(t.amount).toLocaleString('en-IN')}`)
     .join('\n');
 
+  // Debt breakdown
+  const totalDebt = debts.reduce((sum, d) => sum + d.currentBalance, 0);
+  const debtBreakdown = debts.map(d => `  - ${d.name} (${d.type}): ₹${d.currentBalance.toLocaleString('en-IN')} / ₹${d.totalAmount.toLocaleString('en-IN')} (${d.interestRate}% interest, EMI: ₹${d.emi})`).join('\n');
+
   return `FINANCIAL DATA SUMMARY:
 ═══════════════════════
 Total Income: ₹${totalIncome.toLocaleString('en-IN')} (${income.length} transactions)
@@ -61,18 +65,23 @@ MONTHLY TRENDS:
 ${monthlyTrend}
 
 RECENT TRANSACTIONS (last 10):
-${recent}`;
+${recent}
+
+DEBT & LOAN SUMMARY:
+═══════════════════════
+Total Outstanding Debt: ₹${totalDebt.toLocaleString('en-IN')}
+${debtBreakdown}`;
 };
 
 /**
  * Send a message to Gemini with financial context.
  */
-export const sendChatMessage = async (userMessage, transactions, chatHistory = []) => {
+export const sendChatMessage = async (userMessage, transactions, debts = [], chatHistory = []) => {
   if (!GEMINI_API_KEY) {
     throw new Error('Gemini API key not configured. Add VITE_GEMINI_API_KEY to .env file.');
   }
 
-  const financialContext = buildFinancialContext(transactions);
+  const financialContext = buildFinancialContext(transactions, debts);
 
   const systemPrompt = `You are ZorvyAI, a smart financial assistant built into the ZorvyFinance dashboard. 
 You have access to the user's complete financial data shown below. Use this data to provide accurate, personalized answers.
