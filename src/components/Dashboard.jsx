@@ -74,7 +74,7 @@ export const Dashboard = ({ isMobile }) => {
       {/* Greeting */}
       <div style={{ marginBottom: isMobile ? 20 : 32 }}>
         <h1 style={{ fontSize: isMobile ? 22 : 28, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-          {greeting}, User
+          {greeting}, Navas
         </h1>
         <p style={{ fontSize: 14, marginTop: 4, color: 'var(--text-muted)' }}>
           Here's your financial overview

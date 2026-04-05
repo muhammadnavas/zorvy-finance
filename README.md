@@ -2,7 +2,7 @@
 
 ZorvyFinance is a premium, AI-powered personal finance dashboard designed to give you total control over your wealth. Track your income, manage expenses, monitor debts, and get personalized financial advice from **ZorvyAI**.
 
-![ZorvyFinance Dashboard Preview](https://zorvy-finance.vercel.app/)
+![ZorvyFinance Dashboard Preview](./public/preview.png)
 
 ## ✨ Features
 

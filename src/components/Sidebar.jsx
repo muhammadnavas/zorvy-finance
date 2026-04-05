@@ -150,7 +150,7 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
             <User size={16} color="#fff" />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>User</p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Navas</p>
             <p style={{ fontSize: 12, textTransform: 'capitalize', color: 'var(--accent)' }}>{role}</p>
           </div>
         </div>
