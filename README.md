@@ -1,110 +1,91 @@
-# Zorvy Finance
+# ZorvyFinance 💎
 
-A modern financial dashboard application built with React and Vite. Zorvy Finance provides real-time financial insights, transaction management, and comprehensive analytics for personal finance management.
+ZorvyFinance is a premium, AI-powered personal finance dashboard designed to give you total control over your wealth. Track your income, manage expenses, monitor debts, and get personalized financial advice from **ZorvyAI**.
 
-## Features
+![ZorvyFinance Dashboard Preview](https://zorvy-finance.vercel.app/og-image.png)
 
-- **Dashboard**: Interactive overview of financial data with real-time updates
-- **Transaction Management**: View and manage financial transactions
-- **Charts & Analytics**: Visual representation of financial trends and patterns
-- **Insights**: AI-powered financial insights and recommendations
-- **Admin Panel**: Administrative controls and settings
-- **Floating UI Elements**: Modern floating design elements for enhanced UX
-- **Responsive Design**: Fully responsive design using Tailwind CSS
+## ✨ Features
 
-## Tech Stack
+- **📊 Intelligent Dashboard**: A high-fidelity overview of your total income, expenses, net savings, and outstanding debts.
+- **🤖 ZorvyAI**: Built-in financial assistant powered by **Google Gemini**. Ask questions about your spending habits or get debt repayment strategies.
+- **📈 Debt & Loan Tracking**: Dedicated management for loans and credit cards with visual progress bars and automated payment recording.
+- **💸 Transaction Management**: Clean, searchable list of all financial activity with category-based filtering.
+- **📱 Fully Responsive**: Optimized for every device, from wide desktop monitors to mobile phones.
+- **🛡️ Production Ready**: Features a global Error Boundary, zero-error production builds, and accessibility (A11y) optimizations.
+- **🔍 SEO Optimized**: Enriched Meta tags, Open Graph support, and JSON-LD structured data for superior search visibility.
 
-- **React** - UI library
-- **Vite** - Next-generation build tool
-- **Tailwind CSS** - Utility-first CSS framework
-- **PostCSS** - CSS transformation tool
-- **ESLint** - Code quality tool
+## 🛠️ Tech Stack
 
-## Project Structure
+- **React 18** (UI Library)
+- **Vite** (Build Tool)
+- **Lucide React** (Iconography)
+- **Recharts** (Data Visualization)
+- **Gemini Pro API** (AI Intelligence)
+- **Vanilla CSS** (Custom Premium Styling)
 
-```
-src/
-├── components/
-│   ├── AdminPanel.jsx      # Admin controls and settings
-│   ├── Charts.jsx          # Financial charts and visualizations
-│   ├── Dashboard.jsx       # Main dashboard component
-│   ├── Header.jsx          # Application header
-│   ├── Insights.jsx        # Financial insights display
-│   ├── SummaryCard.jsx     # Summary statistics cards
-│   └── TransactionsList.jsx # Transaction list display
-├── context/
-│   └── FinanceContext.jsx  # Global finance state management
-├── assets/                 # Static assets and images
-├── App.jsx                 # Main App component
-├── main.jsx                # Application entry point
-└── index.css               # Global styles
-```
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
+- Node.js (v18+)
+- A **Gemini API Key** from [Google AI Studio](https://aistudio.google.com/)
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/muhammadnavas/zorvy-finance.git
-cd zorvy-finance
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/muhammadnavas/zorvy-finance.git
+   cd zorvy-finance
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+4. **Run in Development**
+   ```bash
+   npm run dev
+   ```
+   Visit `http://localhost:5173` to view the app!
+
+## 📦 Project Structure
+
+```text
+src/
+├── components/       # UI Components (Dashboard, Debts, AiChat, etc.)
+├── context/          # FinanceContext for Global State Management
+├── services/         # AI API integration (Gemini)
+├── assets/           # Global styles and static files
+└── App.jsx           # Main Routing & Layout
 ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+## 📜 Available Scripts
 
-3. Start the development server:
-```bash
-npm run dev
-```
+- `npm run dev`: Start development server.
+- `npm run build`: Create an optimized production bundle.
+- `npm run preview`: Preview the production build locally.
+- `npm run lint`: Run ESLint for code quality checks.
 
-The application will be available at `http://localhost:5173`
+## 🤝 Contributing
 
-## Available Scripts
+Contributions are welcome! If you'd like to improve ZorvyFinance, please fork the repo and create a pull request.
 
-### Development
-```bash
-npm run dev
-```
-Starts the development server with hot module replacement (HMR).
-
-### Build
-```bash
-npm run build
-```
-Creates an optimized production build.
-
-### Preview
-```bash
-npm run preview
-```
-Preview the production build locally.
-
-### Lint
-```bash
-npm run lint
-```
-Run ESLint to check code quality.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
 
-## Author
+## 👤 Author
 
-Muhammad Navas
+**Muhammad Navas**
+- [GitHub](https://github.com/muhammadnavas)
+- [Project Repository](https://github.com/muhammadnavas/zorvy-finance)
 
-## Repository
-
-[GitHub - Zorvy Finance](https://github.com/muhammadnavas/zorvy-finance)
+---
+*Built with ❤️ for better financial freedom.*
