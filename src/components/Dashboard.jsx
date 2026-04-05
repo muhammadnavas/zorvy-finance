@@ -7,6 +7,7 @@ import {
 import { TrendingUp, TrendingDown, PiggyBank, Star, ArrowRight, CreditCard } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 import { CategoryIcon } from './CategoryIcon';
+import { AnimatedNumber } from './AnimatedNumber';
 
 const DONUT_COLORS = ['#ef4444', '#8b5cf6', '#f59e0b', '#3b82f6', '#10b981', '#ec4899', '#06b6d4', '#f97316'];
 
@@ -61,10 +62,10 @@ export const Dashboard = ({ isMobile }) => {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   const summaryCards = [
-    { title: 'TOTAL INCOME',   value: formatFullCurrency(totalIncome),   sub: `${incomeCount} transactions`,  Icon: TrendingUp,   color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
-    { title: 'TOTAL EXPENSES', value: formatFullCurrency(totalExpenses), sub: `${expenseCount} transactions`, Icon: TrendingDown,  color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
-    { title: 'NET SAVINGS',    value: formatFullCurrency(netSavings),    sub: `${savingsRate}% of income`,    Icon: PiggyBank,     color: '#3b82f6', bg: 'rgba(59,130,246,0.12)' },
-    { title: 'TOTAL DEBT',     value: formatFullCurrency(totalDebt),     sub: 'Active liabilities',           Icon: CreditCard,    color: '#8b5cf6', bg: 'rgba(139,92,246,0.12)' },
+    { title: 'TOTAL INCOME',   rawValue: totalIncome,   sub: `${incomeCount} transactions`,  Icon: TrendingUp,   color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
+    { title: 'TOTAL EXPENSES', rawValue: totalExpenses, sub: `${expenseCount} transactions`, Icon: TrendingDown,  color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
+    { title: 'NET SAVINGS',    rawValue: netSavings,    sub: `${savingsRate}% of income`,    Icon: PiggyBank,     color: '#3b82f6', bg: 'rgba(59,130,246,0.12)' },
+    { title: 'TOTAL DEBT',     rawValue: totalDebt,     sub: 'Active liabilities',           Icon: CreditCard,    color: '#8b5cf6', bg: 'rgba(139,92,246,0.12)' },
   ];
 
   const pad = isMobile ? 16 : 32;
@@ -102,7 +103,7 @@ export const Dashboard = ({ isMobile }) => {
               </div>
             </div>
             <p style={{ fontSize: isMobile ? 20 : 28, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>
-              {card.value}
+              <AnimatedNumber value={card.rawValue} formatter={formatFullCurrency} />
             </p>
             <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: 0 }}>{card.sub}</p>
           </Card>
@@ -175,7 +176,7 @@ export const Dashboard = ({ isMobile }) => {
               }}>
                 <span style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)' }}>Total</span>
                 <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
-                  {formatCurrency(totalExpenseForDonut)}
+                  <AnimatedNumber value={totalExpenseForDonut} formatter={formatCurrency} />
                 </span>
               </div>
             </div>

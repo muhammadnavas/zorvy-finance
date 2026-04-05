@@ -7,6 +7,7 @@ import { Debts } from './components/Debts';
 import { Insights } from './components/Insights';
 import { AdminPanel } from './components/AdminPanel';
 import { AiChat } from './components/AiChat';
+import { BottomNav } from './components/BottomNav';
 import { useFinance } from './context/FinanceContext';
 import { Menu, X } from 'lucide-react';
 
@@ -89,6 +90,7 @@ const AppContent = () => {
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingTop: isMobile ? 56 : 0,
+        paddingBottom: isMobile ? 80 : 0, // Extra space for bottom nav
       }}>
         {activeView === 'dashboard' && <Dashboard isMobile={isMobile} />}
         {activeView === 'transactions' && <TransactionsList onOpenAddModal={() => setShowAddModal(true)} isMobile={isMobile} />}
@@ -101,11 +103,14 @@ const AppContent = () => {
             height: isMobile ? 'calc(100vh - 56px)' : '100vh',
             display: 'flex', flexDirection: 'column',
             boxSizing: 'border-box',
+            paddingBottom: isMobile ? 80 : 0, // Space for BottomNav
           }}>
             <AiChat isMobile={isMobile} />
           </div>
         )}
       </main>
+      
+      {isMobile && <BottomNav />}
 
       <AdminPanel isOpen={showAddModal} onClose={() => setShowAddModal(false)} />
     </div>
