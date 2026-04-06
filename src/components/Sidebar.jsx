@@ -38,7 +38,6 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
             ZorvyFinance
           </span>
         </div>
-        {!isMobile && <NotificationCenter isMobile={false} />}
         {isMobile && (
           <button 
             onClick={onClose} 

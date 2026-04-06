@@ -8,6 +8,7 @@ import { TrendingUp, TrendingDown, PiggyBank, Star, ArrowRight, CreditCard } fro
 import { useFinance } from '../context/FinanceContext';
 import { CategoryIcon } from './CategoryIcon';
 import { AnimatedNumber } from './AnimatedNumber';
+import { NotificationCenter } from './NotificationCenter';
 
 const DONUT_COLORS = ['#ef4444', '#8b5cf6', '#f59e0b', '#3b82f6', '#10b981', '#ec4899', '#06b6d4', '#f97316'];
 
@@ -73,13 +74,16 @@ export const Dashboard = ({ isMobile }) => {
   return (
     <div style={{ padding: pad, maxWidth: 1400, margin: '0 auto' }}>
       {/* Greeting */}
-      <div style={{ marginBottom: isMobile ? 20 : 32 }}>
-        <h1 style={{ fontSize: isMobile ? 22 : 28, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-          {greeting}, Navas
-        </h1>
-        <p style={{ fontSize: 14, marginTop: 4, color: 'var(--text-muted)' }}>
-          Here's your financial overview
-        </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: isMobile ? 20 : 32 }}>
+        <div>
+          <h1 style={{ fontSize: isMobile ? 22 : 28, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            {greeting}, Navas
+          </h1>
+          <p style={{ fontSize: 14, marginTop: 4, color: 'var(--text-muted)' }}>
+            Here's your financial overview
+          </p>
+        </div>
+        {!isMobile && <NotificationCenter isMobile={false} />}
       </div>
 
       {/* Summary Cards — 2 cols on mobile, 4 on desktop */}

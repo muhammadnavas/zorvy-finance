@@ -38,8 +38,7 @@ const AppContent = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: 'var(--bg-base)' }}>
-      {/* Mobile topbar */}
-      {isMobile && (
+      {isMobile && activeView === 'dashboard' && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40,
           display: 'flex', alignItems: 'center', gap: 12,
@@ -58,6 +57,28 @@ const AppContent = () => {
           </button>
           <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', flex: 1 }}>ZorvyFinance</span>
           <NotificationCenter isMobile={isMobile} />
+        </div>
+      )}
+
+      {/* Basic Mobile topbar for other views (Menu only) */}
+      {isMobile && activeView !== 'dashboard' && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40,
+          display: 'flex', alignItems: 'center', gap: 12,
+          padding: '12px 16px', height: 56,
+          background: 'var(--bg-sidebar)',
+          borderBottom: '1px solid var(--border)',
+        }}>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              padding: 6, borderRadius: 8, color: 'var(--text-primary)',
+            }}
+          >
+            <Menu size={22} />
+          </button>
+          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', flex: 1 }}>ZorvyFinance</span>
         </div>
       )}
 

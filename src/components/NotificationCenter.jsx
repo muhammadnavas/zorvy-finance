@@ -37,7 +37,7 @@ export const NotificationCenter = ({ isMobile }) => {
         onClick={() => setIsOpen(!isOpen)}
         style={{
           background: 'none', border: 'none', cursor: 'pointer',
-          padding: 8, borderRadius: 10, position: 'relative',
+          padding: isMobile ? 8 : 10, borderRadius: 12, position: 'relative',
           color: unreadCount > 0 ? 'var(--accent)' : 'var(--text-muted)',
           transition: 'all 0.2s',
           display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -45,13 +45,13 @@ export const NotificationCenter = ({ isMobile }) => {
         onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-surface-hover)'}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
       >
-        {unreadCount > 0 ? <BellRing size={20} /> : <Bell size={20} />}
+        {unreadCount > 0 ? <BellRing size={isMobile ? 20 : 24} /> : <Bell size={isMobile ? 20 : 24} />}
         {unreadCount > 0 && (
           <span style={{
-            position: 'absolute', top: 6, right: 6,
-            minWidth: 16, height: 16, borderRadius: 8,
+            position: 'absolute', top: isMobile ? 6 : 4, right: isMobile ? 6 : 4,
+            minWidth: isMobile ? 16 : 20, height: isMobile ? 16 : 20, borderRadius: 10,
             background: '#ef4444', color: '#fff',
-            fontSize: 10, fontWeight: 700,
+            fontSize: isMobile ? 10 : 11, fontWeight: 700,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             border: '2px solid var(--bg-sidebar)',
             padding: '0 4px'
@@ -65,14 +65,14 @@ export const NotificationCenter = ({ isMobile }) => {
       {isOpen && (
         <div style={{
           position: 'absolute',
-          top: 'calc(100% + 8px)',
+          top: 'calc(100% + 12px)',
           right: isMobile ? -50 : 0,
-          width: isMobile ? 'calc(100vw - 32px)' : 340,
-          maxHeight: 480,
+          width: isMobile ? 'calc(100vw - 32px)' : 380,
+          maxHeight: 520,
           background: 'var(--bg-surface)',
           border: '1px solid var(--border)',
-          borderRadius: 16,
-          boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+          borderRadius: 20,
+          boxShadow: '0 10px 40px rgba(0,0,0,0.4)',
           zIndex: 100,
           display: 'flex',
           flexDirection: 'column',

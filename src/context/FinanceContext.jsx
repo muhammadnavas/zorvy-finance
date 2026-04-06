@@ -67,8 +67,11 @@ const transactionReducer = (state, action) => {
 const notificationReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_NOTIFICATION':
-      // Prevent duplicates by checking title
-      if (state.find(n => n.title === action.payload.title && !n.read)) return state;
+      // Prevent duplicates by checking unique key
+      if (action.payload.key && state.find(n => n.key === action.payload.key)) return state;
+      // Also prevent duplicates by title if no key provided
+      if (!action.payload.key && state.find(n => n.title === action.payload.title && !n.read)) return state;
+      
       return [{ 
         id: Date.now(), 
         read: false, 
@@ -164,12 +167,14 @@ export const FinanceProvider = ({ children }) => {
   useEffect(() => {
     // 1. Check upcoming debts
     const today = new Date().getDate();
+    const monthKey = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
     debts.forEach(debt => {
       const daysLeft = debt.dueDate - today;
       if (daysLeft >= 0 && daysLeft <= 7) {
         notifDispatch({
           type: 'ADD_NOTIFICATION',
           payload: {
+            key: `debt-${debt.id}-${monthKey}`,
             title: `${debt.name} EMI Due Soon`,
             message: `Your payment of ₹${debt.emi?.toLocaleString() || '---'} is due in ${daysLeft === 0 ? 'today' : daysLeft + ' days'}.`,
             type: 'debt',
