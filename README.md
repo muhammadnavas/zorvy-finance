@@ -7,12 +7,13 @@ ZorvyFinance is a premium, AI-powered personal finance dashboard designed to giv
 ## ✨ Features
 
 - **📊 Intelligent Dashboard**: A high-fidelity overview of your total income, expenses, net savings, and outstanding debts.
-- **🤖 ZorvyAI**: Built-in financial assistant powered by **Google Gemini**. Ask questions about your spending habits or get debt repayment strategies.
-- **📈 Debt & Loan Tracking**: Dedicated management for loans and credit cards with visual progress bars and automated payment recording.
-- **💸 Transaction Management**: Clean, searchable list of all financial activity with category-based filtering.
-- **📱 Fully Responsive**: Optimized for every device, from wide desktop monitors to mobile phones.
-- **🛡️ Production Ready**: Features a global Error Boundary, zero-error production builds, and accessibility (A11y) optimizations.
-- **🔍 SEO Optimized**: Enriched Meta tags, Open Graph support, and JSON-LD structured data for superior search visibility.
+- **🔔 Smart Notifications**: Proactive alerts for upcoming **Debt EMIs** and large expense detection (₹50k+).
+- **🤖 ZorvyAI**: A dedicated financial assistant page powered by **Google Gemini**. Get personalized advice and debt strategies.
+- **📱 Mobile Bottom Nav**: Optimized mobile navigation bar with one-tap access to primary financial views.
+- **✨ Animated Counters**: Premium "wow" factor with numbers that count up from zero on load.
+- **📈 Debt & Loan Tracking**: Visual progress bars and automated payment recording for all liabilities.
+- **💸 Transaction Management**: Clean, searchable list with category-based filtering and CSV export.
+- **🛡️ Production Ready**: Features a global Error Boundary, zero-error production builds, and A11y optimizations.
 
 ## 🛠️ Tech Stack
 
@@ -59,11 +60,11 @@ ZorvyFinance is a premium, AI-powered personal finance dashboard designed to giv
 
 ```text
 src/
-├── components/       # UI Components (Dashboard, Debts, AiChat, etc.)
-├── context/          # FinanceContext for Global State Management
+├── components/       # UI Components (Dashboard, BottomBar, NotificationCenter, etc.)
+├── context/          # FinanceContext for Global Smart Alerts & State
 ├── services/         # AI API integration (Gemini)
 ├── assets/           # Global styles and static files
-└── App.jsx           # Main Routing & Layout
+└── App.jsx           # Responsive Layout & Content Wrapper
 ```
 
 ## 📜 Available Scripts
