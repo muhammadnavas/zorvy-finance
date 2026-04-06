@@ -1,5 +1,6 @@
-import { BarChart3, LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X, Bot, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Lightbulb, ArrowLeftRight, Sun, Moon, User, X, Bot, CreditCard } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
+import { NotificationCenter } from './NotificationCenter';
 
 const navItems = [
   { id: 'dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
@@ -37,6 +38,7 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
             ZorvyFinance
           </span>
         </div>
+        {!isMobile && <NotificationCenter isMobile={false} />}
         {isMobile && (
           <button 
             onClick={onClose} 
@@ -51,34 +53,37 @@ export const Sidebar = ({ onNavigate, onClose, isMobile }) => {
         )}
       </div>
 
-      {/* Navigation */}
-      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, padding: '8px 12px' }}>
-        {navItems.map(item => {
-          const isActive = activeView === item.id;
-          return (
-            <button
-              key={item.id}
-              id={`nav-${item.id}`}
-              onClick={() => handleNav(item.id)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '10px 16px', borderRadius: 12,
-                fontSize: 14, fontWeight: 500,
-                cursor: 'pointer', width: '100%', textAlign: 'left',
-                border: 'none',
-                background: isActive ? 'var(--accent-light)' : 'transparent',
-                color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = 'var(--bg-surface-hover)'; }}
-              onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = isActive ? 'var(--accent-light)' : 'transparent'; }}
-            >
-              <item.icon size={20} />
-              {item.label}
-            </button>
-          );
-        })}
-      </nav>
+      {/* Navigation - Hidden on mobile because it's in BottomBar */}
+      {!isMobile && (
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, padding: '8px 12px' }}>
+          {navItems.map(item => {
+            const isActive = activeView === item.id;
+            return (
+              <button
+                key={item.id}
+                id={`nav-${item.id}`}
+                onClick={() => handleNav(item.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  padding: '10px 16px', borderRadius: 12,
+                  fontSize: 14, fontWeight: 500,
+                  cursor: 'pointer', width: '100%', textAlign: 'left',
+                  border: 'none',
+                  background: isActive ? 'var(--accent-light)' : 'transparent',
+                  color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = 'var(--bg-surface-hover)'; }}
+                onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = isActive ? 'var(--accent-light)' : 'transparent'; }}
+              >
+                <item.icon size={20} />
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
+      )}
+      {isMobile && <div style={{ flex: 1 }} />}
 
       {/* Bottom section */}
       <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>

@@ -64,6 +64,28 @@ const transactionReducer = (state, action) => {
   }
 };
 
+const notificationReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_NOTIFICATION':
+      // Prevent duplicates by checking title
+      if (state.find(n => n.title === action.payload.title && !n.read)) return state;
+      return [{ 
+        id: Date.now(), 
+        read: false, 
+        time: new Date().toISOString(), 
+        ...action.payload 
+      }, ...state].slice(0, 20); // Keep last 20
+    case 'MARK_READ':
+      return state.map(n => n.id === action.payload ? { ...n, read: true } : n);
+    case 'MARK_ALL_READ':
+      return state.map(n => ({ ...n, read: true }));
+    case 'DELETE_NOTIFICATION':
+      return state.filter(n => n.id !== action.payload);
+    default:
+      return state;
+  }
+};
+
 const debtReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_DEBT':
@@ -105,6 +127,12 @@ export const FinanceProvider = ({ children }) => {
     (initial) => loadFromStorage('zf_debts', initial)
   );
 
+  const [notifications, notifDispatch] = useReducer(
+    notificationReducer,
+    [],
+    (initial) => loadFromStorage('zf_notifications', initial)
+  );
+
   const [role, setRole] = useState(() => loadFromStorage('zf_role', 'admin'));
   const [theme, setTheme] = useState(() => loadFromStorage('zf_theme', 'dark'));
   const [activeView, setActiveView] = useState('dashboard');
@@ -121,6 +149,7 @@ export const FinanceProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem('zf_debts', JSON.stringify(debts)); }, [debts]);
   useEffect(() => { localStorage.setItem('zf_role', JSON.stringify(role)); }, [role]);
   useEffect(() => { localStorage.setItem('zf_theme', JSON.stringify(theme)); }, [theme]);
+  useEffect(() => { localStorage.setItem('zf_notifications', JSON.stringify(notifications)); }, [notifications]);
 
   // Apply theme to document
   useEffect(() => {
@@ -130,6 +159,45 @@ export const FinanceProvider = ({ children }) => {
   const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   }, []);
+
+  // ── Smart Notifications Logic ────────────────────────────
+  useEffect(() => {
+    // 1. Check upcoming debts
+    const today = new Date().getDate();
+    debts.forEach(debt => {
+      const daysLeft = debt.dueDate - today;
+      if (daysLeft >= 0 && daysLeft <= 7) {
+        notifDispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            title: `${debt.name} EMI Due Soon`,
+            message: `Your payment of ₹${debt.emi?.toLocaleString() || '---'} is due in ${daysLeft === 0 ? 'today' : daysLeft + ' days'}.`,
+            type: 'debt',
+            severity: daysLeft <= 2 ? 'high' : 'medium'
+          }
+        });
+      }
+    });
+
+    // 2. Large expense alert (> 50k)
+    const latestTransaction = transactions[0];
+    if (latestTransaction && latestTransaction.type === 'expense' && Math.abs(latestTransaction.amount) >= 50000) {
+      const txnTime = new Date(latestTransaction.date).getTime();
+      const now = new Date().getTime();
+      // Only notify if added in the last 24h
+      if (now - txnTime < 86400000) {
+        notifDispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            title: 'Large Expense Alert',
+            message: `A large transaction of ₹${Math.abs(latestTransaction.amount).toLocaleString()} was recorded for ${latestTransaction.category}.`,
+            type: 'expense',
+            severity: 'medium'
+          }
+        });
+      }
+    }
+  }, [debts, transactions]);
 
   // ── Actions ─────────────────────────────────────────────
   const addTransaction = useCallback((transaction) => {
@@ -239,6 +307,10 @@ export const FinanceProvider = ({ children }) => {
     filters, setFilters,
     addTransaction, editTransaction, deleteTransaction,
     addDebt, updateDebt, deleteDebt, recordDebtPayment,
+    notifications,
+    markNotifRead: (id) => notifDispatch({ type: 'MARK_READ', payload: id }),
+    markAllNotifsRead: () => notifDispatch({ type: 'MARK_ALL_READ' }),
+    deleteNotif: (id) => notifDispatch({ type: 'DELETE_NOTIFICATION', payload: id }),
     computed,
   };
 
